@@ -1,8 +1,6 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Overview
 
-# Getting Started
-
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Recreates an issue with `onEndReachedThreshold` with a value of 0.5 as stated in the [docs](https://reactnative.dev/docs/virtualizedlist#onendreachedthreshold) does not fire at the middle of the list.
 
 ## Step 1: Start the Metro Server
 
