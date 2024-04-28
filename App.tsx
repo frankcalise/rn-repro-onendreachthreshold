@@ -68,10 +68,13 @@ function App(): React.JSX.Element {
         keyExtractor={item => item.id}
         renderItem={renderItem}
         onEndReached={onEndReached}
-        // Docs mention 0.5 being middle of the list, will output around item 89/100
-        onEndReachedThreshold={0.5}
-        // Value of 5 seems way closer to middle, will output ~52
-        // onEndReachedThreshold={5}
+        // :( Docs mention 0.5 being middle of the list, will output around item 85/100
+        // https://reactnative.dev/docs/virtualizedlist#onendreachedthreshold
+        //
+        // onEndReachedThreshold={0.5}
+        //
+        // :) Value of 5 seems way closer to middle, will output around item 52/100
+        onEndReachedThreshold={5}
         onViewableItemsChanged={onViewableItemsChanged}
         ItemSeparatorComponent={() => <View style={$separator} />}
       />
