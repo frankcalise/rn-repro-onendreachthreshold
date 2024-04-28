@@ -8,6 +8,7 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  FlatList,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -15,6 +16,7 @@ import {
   Text,
   useColorScheme,
   View,
+  ViewStyle,
 } from 'react-native';
 
 import {
@@ -29,38 +31,44 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const data = Array.from({length: 100}, (_, index) => ({
+  id: index.toString(),
+  title: `Item ${index}`,
+  backgroundColor: index % 2 === 0 ? 'lightgrey' : 'darkgreen',
+}));
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
+  const [endReached, setEndReached] = React.useState(false);
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1,
   };
+
+  const renderItem = React.useCallback((item, index) => {
+    return (
+      <View style={[$cell, {backgroundColor: item.item.backgroundColor}]}>
+        <Text>{item.item.title}</Text>
+      </View>
+    );
+  }, []);
+
+  const onEndReached = React.useCallback(() => {
+    console.log('onEndReached');
+    setEndReached(true);
+  }, []);
+
+  const onViewableItemsChanged = React.useCallback(
+    ({changed}) => {
+      if (endReached) {
+        // console.log('viewableItems', viewableItems);
+        console.log('changed', changed);
+      }
+    },
+    [endReached],
+  );
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -68,51 +76,31 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+      <FlatList
+        data={data}
+        keyExtractor={item => item.id}
+        renderItem={renderItem}
+        onEndReached={onEndReached}
+        // Docs mention 0.5 being middle of the list, will output around item 89/100
+        onEndReachedThreshold={0.5}
+        // Value of 5 seems way closer to middle, will output ~52
+        // onEndReachedThreshold={5}
+        onViewableItemsChanged={onViewableItemsChanged}
+        ItemSeparatorComponent={() => <View style={$separator} />}
+      />
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
 export default App;
+
+const $cell: ViewStyle = {
+  height: 78,
+  alignItems: 'center',
+  alignContent: 'center',
+};
+
+const $separator: ViewStyle = {
+  height: 1,
+  backgroundColor: 'black',
+};
