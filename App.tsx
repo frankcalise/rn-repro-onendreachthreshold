@@ -87,7 +87,7 @@ export default App;
 const $cell: ViewStyle = {
   height: 78,
   alignItems: 'center',
-  alignContent: 'center',
+  justifyContent: 'center',
 };
 
 const $separator: ViewStyle = {
