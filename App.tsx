@@ -6,30 +6,17 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   FlatList,
   SafeAreaView,
-  ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   useColorScheme,
   View,
   ViewStyle,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const data = Array.from({length: 100}, (_, index) => ({
   id: index.toString(),
