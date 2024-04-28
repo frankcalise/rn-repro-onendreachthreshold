@@ -2,6 +2,8 @@
 
 Recreates an issue with `onEndReachedThreshold` with a value of 0.5 as stated in the [docs](https://reactnative.dev/docs/virtualizedlist#onendreachedthreshold) does not fire at the middle of the list.
 
+Acts the same in old and new architecture, iOS and Android and both FlatList and FlashList.
+
 ## Step 1: Start the Metro Server
 
 First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
